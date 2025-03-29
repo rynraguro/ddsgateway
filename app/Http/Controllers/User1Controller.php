@@ -1,48 +1,45 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponser;
+use App\Services\User1Service;
 
-class UserController extends Controller
-{
+class User1Controller extends Controller {
     use ApiResponser;
-    private $request;
 
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
+    public $user1Service;
+
+    public function __construct(User1Service $user1Service) {
+        $this->user1Service = $user1Service;
     }
 
-    // Clear out the code for the API Gateway logic.
-    public function getUsers()
-    {
-        // TODO: Implement API Gateway logic to fetch users from Site1.
+    // Get all users
+    public function index() {
+        return $this->successResponse($this->user1Service->obtainUsers1());
     }
 
-    public function index()
-    {
-        // TODO: Implement API Gateway logic to fetch all users.
+    // Create a new user
+    public function add(Request $request) {
+        return $this->successResponse(
+            $this->user1Service->createUser1($request->all()), 
+            Response::HTTP_CREATED
+        );
     }
 
-    public function addUser(Request $request)
-    {
-        // TODO: Implement API Gateway logic to add a new user.
+    // Get a specific user
+    public function show($id) {
+        return $this->successResponse($this->user1Service->obtainUser1($id));
     }
 
-    public function show($id)
-    {
-        // TODO: Implement API Gateway logic to display a single user by ID.
+    // Update a user
+    public function update(Request $request, $id) {
+        return $this->successResponse($this->user1Service->editUser1($request->all(), $id));
     }
 
-    public function update(Request $request, $id)
-    {
-        // TODO: Implement API Gateway logic to update user information.
-    }
-
-    public function delete($id)
-    {
-        // TODO: Implement API Gateway logic to delete a user.
+    // Delete a user
+    public function delete($id) {
+        return $this->successResponse($this->user1Service->deleteUser1($id));
     }
 }
